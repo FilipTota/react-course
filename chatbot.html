@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chatbot</title>
+  </head>
+  <body>
+    <div class="js-container"></div>
+
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script type="text/babel">
+      // component
+      const ChatInput = () => {
+        return (
+          <>
+            <input
+              type="text"
+              placeholder="Send a message to Chatbot"
+              size="30"
+            />
+            <button>Send</button>
+          </>
+        );
+      };
+
+      const ChatMessage = ({ message, sender }) => {
+        // every component function gets one parameter, called props
+        // props is an object and contains all the attributes that we give our component
+        // props make our component reusable
+        // const { message, image, sender } = props; <---- equals to ----> ({ message, sender })
+
+        return (
+          <div>
+            {sender === "robot" && (
+              <img src="./chatbot-images/robot.png" width="50" />
+            )}
+            {message}
+            {sender === "user" && (
+              <img src="./chatbot-images/user.png" width="50" />
+            )}
+          </div>
+        );
+      };
+
+      const App = () => {
+        return (
+          <>
+            <ChatInput />
+            <ChatMessage message="hello chatbot" sender="user" />
+            <ChatMessage message="Hello! How can I help you?" sender="robot" />
+            <ChatMessage message="can you get me todays date?" sender="user" />
+            <ChatMessage message="Today is January 2" sender="robot" />
+          </>
+        );
+      };
+
+      const container = document.querySelector(".js-container");
+      ReactDOM.createRoot(container).render(<App />);
+    </script>
+  </body>
+</html>
