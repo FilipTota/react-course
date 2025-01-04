@@ -44,14 +44,87 @@
         );
       };
 
+      const ChatMessages = () => {
+        // save the data/information for chat messages using react state
+        // state = state is a data that is connected to HTML
+        // -> when we update this data it will update the HTML
+        // if we just have the variable as a data, when ve add something to that data it will not update the HTML/it will not get diplayed on the browser in our code example, but when we save that data inside state, then it will update it
+        const [chatMessages, setChatMessages] = React.useState([
+          // array destructoring upon seting useState
+          {
+            id: "id1",
+            message: "hello chatbot",
+            sender: "user",
+          },
+          {
+            id: "id2",
+            message: "Hello! How can I help you?",
+            sender: "robot",
+          },
+          {
+            id: "id3",
+            message: "can you get me todays date?",
+            sender: "user",
+          },
+          {
+            id: "id4",
+            message: "Today is January 2",
+            sender: "robot",
+          },
+        ]);
+
+        // array destructoring (order matters, first array value gets stored inside chatMessages, and second value inside setChatMessages)
+        // const [chatMessages, setChatMessages] = array;
+
+        // const chatMessages = array[0]; // array[0] gets us first value, initial value (in our case list of objects stored inside state)
+        // // chatMessages initial value can change (if we add new chat message, initial value will be changed)
+        // const setChatMessages = array[1]; // array[1] is the second value which contains function that updates this data
+
+        const sendMesage = () => {
+          // chatMessages.push({
+          //   id: crypto.randomUUID(), // generates random id string
+          //   message: "test",
+          //   sender: "user",
+          // });
+
+          // in React, we should not update the data directly
+          // instead of updating the data directly with variable, we will use setChatMessage (updater function) to change data to that the state data gets changed and HTML responds to that change
+          setChatMessages([
+            // in React, we sould not modify the data directly.
+            // we should always create a copy of that data,
+            // and then modify the copy
+            // (this helps React be more efficient)
+            ...chatMessages, // spread operator (to create array copy)
+            {
+              id: crypto.randomUUID(), // generates random id string
+              message: "test",
+              sender: "user",
+            },
+          ]);
+        };
+
+        return (
+          <>
+            <button onClick={sendMesage}>Send message</button>
+            {chatMessages.map((chatMessage) => {
+              // .map() lets us go through array and convert each value to a new value
+              return (
+                <ChatMessage
+                  message={chatMessage.message}
+                  sender={chatMessage.sender}
+                  key={chatMessage.id}
+                />
+              );
+            })}
+          </>
+        );
+      };
+
       const App = () => {
         return (
           <>
             <ChatInput />
-            <ChatMessage message="hello chatbot" sender="user" />
-            <ChatMessage message="Hello! How can I help you?" sender="robot" />
-            <ChatMessage message="can you get me todays date?" sender="user" />
-            <ChatMessage message="Today is January 2" sender="robot" />
+            <ChatMessages />
           </>
         );
       };
