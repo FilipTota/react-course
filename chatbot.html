@@ -9,18 +9,75 @@
     <script src="https://unpkg.com/supersimpledev/react.js"></script>
     <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
 
+    <script src="https://unpkg.com/supersimpledev/chatbot.js"></script>
+    <!-- external library to get response from chatbot-->
+
     <script src="https://unpkg.com/supersimpledev/babel.js"></script>
     <script type="text/babel">
       // component
-      const ChatInput = () => {
+      const ChatInput = ({ chatMessages, setChatMessages }) => {
+        const [inputText, setInputText] = React.useState("");
+
+        const saveInputText = (event) => {
+          setInputText(event.target.value);
+        };
+
+        const sendMessage = () => {
+          // chatMessages.push({
+          //   id: crypto.randomUUID(), // generates random id string
+          //   message: "test",
+          //   sender: "user",
+          // });
+
+          // in React, we should not update the data directly
+          // instead of updating the data directly with variable, we will use setChatMessage (updater function) to change data to that the state data gets changed and HTML responds to that change
+          const newChatMessages = [
+            // in React, we sould not modify the data directly.
+            // we should always create a copy of that data,
+            // and then modify the copy
+            // (this helps React be more efficient)
+            ...chatMessages, // spread operator (to create array copy)
+            {
+              id: crypto.randomUUID(), // generates random id string
+              message: inputText,
+              sender: "user",
+            },
+          ];
+
+          // the reason we have newChatMessages variable is to have it saved
+          // when we setChatMessage with that array directly, state does not update immediately, state is updated after all of the code is finished
+          // without that data set in a seperate varibale (newChatMessages), we will not get displayed both user and robot message, only robot message
+          // because code was not finised and state was not updated fully
+          // with this variable, we have data saved inside variable and then be setChatMessages with that varibale and both user and robot message will be displayed
+          setChatMessages(newChatMessages);
+
+          // Chatbot external library to get the response:
+          const response = Chatbot.getResponse(inputText);
+
+          // set new message (this time from robot/chatbot response)
+          setChatMessages([
+            ...newChatMessages,
+            {
+              id: crypto.randomUUID(), // generates random id string
+              message: response,
+              sender: "robot",
+            },
+          ]);
+
+          // setInputText is set to "" because we want to set value property from <input /> to empty
+          setInputText("");
+        };
+
         return (
           <>
             <input
               type="text"
               placeholder="Send a message to Chatbot"
               size="30"
+              onChange={saveInputText}
+              value={inputText} // controlled input -> using the value prop, we can controll the text inside that textbox
             />
-            <button>Send</button>
+            <button onClick={sendMessage}>Send</button>
           </>
         );
       };
@@ -44,7 +101,24 @@
         );
       };
 
-      const ChatMessages = () => {
+      const ChatMessages = ({ chatMessages }) => {
+        return (
+          <>
+            {chatMessages.map((chatMessage) => {
+              // .map() lets us go through array and convert each value to a new value
+              return (
+                <ChatMessage
+                  message={chatMessage.message}
+                  sender={chatMessage.sender}
+                  key={chatMessage.id}
+                />
+              );
+            })}
+          </>
+        );
+      };
+
+      const App = () => {
         // save the data/information for chat messages using react state
         // state = state is a data that is connected to HTML
         // -> when we update this data it will update the HTML
@@ -80,51 +154,14 @@
         // // chatMessages initial value can change (if we add new chat message, initial value will be changed)
         // const setChatMessages = array[1]; // array[1] is the second value which contains function that updates this data
 
-        const sendMesage = () => {
-          // chatMessages.push({
-          //   id: crypto.randomUUID(), // generates random id string
-          //   message: "test",
-          //   sender: "user",
-          // });
-
-          // in React, we should not update the data directly
-          // instead of updating the data directly with variable, we will use setChatMessage (updater function) to change data to that the state data gets changed and HTML responds to that change
-          setChatMessages([
-            // in React, we sould not modify the data directly.
-            // we should always create a copy of that data,
-            // and then modify the copy
-            // (this helps React be more efficient)
-            ...chatMessages, // spread operator (to create array copy)
-            {
-              id: crypto.randomUUID(), // generates random id string
-              message: "test",
-              sender: "user",
-            },
-          ]);
-        };
-
         return (
           <>
-            <button onClick={sendMesage}>Send message</button>
-            {chatMessages.map((chatMessage) => {
-              // .map() lets us go through array and convert each value to a new value
-              return (
-                <ChatMessage
-                  message={chatMessage.message}
-                  sender={chatMessage.sender}
-                  key={chatMessage.id}
-                />
-              );
-            })}
-          </>
-        );
-      };
-
-      const App = () => {
-        return (
-          <>
-            <ChatInput />
-            <ChatMessages />
+            <ChatInput
+              // sending state as a properties to access these state data (chatMessages & setChatMessages) inside ChatInput component
+              chatMessages={chatMessages}
+              setChatMessages={setChatMessages}
+            />
+            <ChatMessages chatMessages={chatMessages} />
           </>
         );
       };
