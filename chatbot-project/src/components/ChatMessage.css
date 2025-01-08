@@ -1,0 +1,22 @@
+.chat-message-user {
+  display: flex;
+  justify-content: right;
+  align-items: start; /* to stop items from stretching (after we set a margin of chat-message-text our items get stretched -because we have displaye flex-) */
+}
+
+.chat-message-robot {
+  display: flex;
+  align-items: start;
+}
+
+.chat-message-text {
+  background-color: rgb(238, 238, 238);
+  padding: 15px 20px;
+  border-radius: 10px;
+  margin: 0 10px 20px 10px;
+  max-width: 300px;
+}
+
+.chat-message-profile {
+  width: 45px;
+}
