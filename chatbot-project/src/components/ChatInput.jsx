@@ -89,7 +89,7 @@ export const ChatInput = ({ chatMessages, setChatMessages }) => {
         }}
       />
       <button
-        onClick={isLoading || inputText === "" ? () => {} : sendMessage}
+        onClick={isLoading || inputText === "" ? null : sendMessage}
         className="send-button"
       >
         Send
