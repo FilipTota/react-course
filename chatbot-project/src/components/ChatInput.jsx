@@ -4,12 +4,13 @@ import "./ChatInput.css";
 
 export const ChatInput = ({ chatMessages, setChatMessages }) => {
   const [inputText, setInputText] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const saveInputText = (event) => {
     setInputText(event.target.value);
   };
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     // chatMessages.push({
     //   id: crypto.randomUUID(), // generates random id string
     //   message: "test",
@@ -38,8 +39,24 @@ export const ChatInput = ({ chatMessages, setChatMessages }) => {
     // with this variable, we have data saved inside variable and then be setChatMessages with that varibale and both user and robot message will be displayed
     setChatMessages(newChatMessages);
 
+    // setInputText is set to "" because we want to set value property from <input /> to empty
+    setInputText("");
+
+    // set message to loading before we get the response
+    // we set array directly to setChatMessage to not update state immediately, state is updated after all of the code is finished and the loading response gets overwriten by robot response at the end of this function
+    setChatMessages([
+      ...newChatMessages,
+      {
+        id: crypto.randomUUID(),
+        message: "Loading...",
+        sender: "robot",
+      },
+    ]);
+    // set isLoadin to true before we get response to avoid sending new message
+    setIsLoading(true);
+
     // Chatbot external library to get the response:
-    const response = Chatbot.getResponse(inputText);
+    const response = await Chatbot.getResponseAsync(inputText);
 
     // set new message (this time from robot/chatbot response)
     setChatMessages([
@@ -50,9 +67,8 @@ export const ChatInput = ({ chatMessages, setChatMessages }) => {
         sender: "robot",
       },
     ]);
-
-    // setInputText is set to "" because we want to set value property from <input /> to empty
-    setInputText("");
+    // set isLoading to false after we get reponse to allow new messages to be send
+    setIsLoading(false);
   };
 
   return (
@@ -64,8 +80,18 @@ export const ChatInput = ({ chatMessages, setChatMessages }) => {
         onChange={saveInputText}
         value={inputText} // controlled input -> using the value prop, we can controll the text inside that textbox
         className="chat-input"
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            if (isLoading === false && inputText !== "") sendMessage();
+          } else if (e.key === "Escape") {
+            setInputText("");
+          }
+        }}
       />
-      <button onClick={sendMessage} className="send-button">
+      <button
+        onClick={isLoading || inputText === "" ? () => {} : sendMessage}
+        className="send-button"
+      >
         Send
       </button>
     </div>

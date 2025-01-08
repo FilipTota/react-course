@@ -3,6 +3,8 @@ import { ChatInput } from "./components/ChatInput";
 import ChatMessages from "./components/ChatMessages"; // default export
 import "./App.css";
 
+import { PracticeCode } from "./components/PracticeCode";
+
 const App = () => {
   // save the data/information for chat messages using react state
   // state = state is a data that is connected to HTML
@@ -47,6 +49,7 @@ const App = () => {
         chatMessages={chatMessages}
         setChatMessages={setChatMessages}
       />
+      <PracticeCode />
     </div>
   );
 };
