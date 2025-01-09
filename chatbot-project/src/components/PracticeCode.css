@@ -5,3 +5,47 @@
 .practice-code-container {
   margin: 1em 0;
 }
+
+.on-button {
+  background: rgb(25, 135, 84);
+  padding: 0.8em 1em;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.off-button {
+  background: rgb(220, 53, 69);
+  padding: 0.8em 1em;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.input-element {
+  padding: 0.8em 1em;
+  border: 1px solid #000;
+  border-radius: 5px;
+  margin: 0 0.5em 0.5em 0;
+  width: 200px;
+}
+
+.login-form-button {
+  background: rgb(0, 123, 255);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 0.8em 1em;
+  margin: 0 0.4em 0 0;
+}
+
+.counter-button {
+  background: rgb(25, 135, 84);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 0.8em 1em;
+  margin: 0 0.4em 0 0;
+}

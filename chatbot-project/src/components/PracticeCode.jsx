@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import dayjs from "dayjs";
 import "./PracticeCode.css";
 
@@ -6,14 +6,19 @@ export const PracticeCode = () => {
   const [currentTime, setCurrentTime] = useState(dayjs().format("HH:mm:ss"));
   const [count, setCount] = useState(0);
   const [text, setText] = useState("");
+  const [isButtonOn, setIsButtonOn] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
+  const updateCounterButton = useRef(null);
+  const counterInterval = useRef(null); // Store interval ID in a ref
+  // useRef is used to persist the interval ID (counterInterval.current) across renders
+  // this is necessary because the interval ID needs to be kept for later reference, even if the component re-renders
 
   // clock that gets updated every 1 sec
-  const updateCurrentTime = () => {
+  useEffect(() => {
     setInterval(() => {
       setCurrentTime(dayjs().format("HH:mm:ss"));
     }, 1000);
-  };
-  updateCurrentTime();
+  }, []);
 
   // update count
   const updateCounter = () => {
@@ -21,6 +26,17 @@ export const PracticeCode = () => {
   };
   const resetCounter = () => {
     setCount(0);
+    clearInterval(counterInterval.current);
+  };
+  const counterAutoClick = () => {
+    const buttonElement = updateCounterButton.current;
+
+    // Start the interval and store the ID
+    counterInterval.current = setInterval(() => {
+      if (buttonElement) {
+        buttonElement.click();
+      }
+    }, 1000);
   };
 
   // display as you type
@@ -34,6 +50,16 @@ export const PracticeCode = () => {
     setText("Example");
   };
 
+  // switch button ON & OFF
+  const switchButton = () => {
+    setIsButtonOn(!isButtonOn);
+  };
+
+  // show or hide password
+  const showHidePassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <>
       <span className="practice-code-title">Clock:</span>
@@ -42,21 +68,39 @@ export const PracticeCode = () => {
       <span className="practice-code-title">Login form:</span>
       <div className="practice-code-container">
         <div>
-          <input type="email" placeholder="Email" />
+          <input type="email" placeholder="Email" className="input-element" />
         </div>
         <div>
-          <input type="password" placeholder="Password" />
+          <input
+            type={showPassword ? "text" : "password"}
+            placeholder="Password"
+            className="input-element"
+          />
+          <button onClick={showHidePassword}>
+            {showPassword ? "Hide" : "Show"}
+          </button>
         </div>
         <div>
-          <button>Login</button>
-          <button>Sign up</button>
+          <button className="login-form-button">Login</button>
+          <button className="login-form-button">Sign up</button>
         </div>
       </div>
 
       <span className="practice-code-title">Counter:</span>
       <div className="practice-code-container">
-        <button onClick={updateCounter}>Clicked {count} times</button>
-        <button onClick={resetCounter}>Reset</button>
+        <button
+          className="counter-button"
+          onClick={updateCounter}
+          ref={updateCounterButton}
+        >
+          Clicked {count} times
+        </button>
+        <button className="counter-button" onClick={resetCounter}>
+          Reset
+        </button>
+        <button className="counter-button" onClick={counterAutoClick}>
+          Auto Click
+        </button>
       </div>
 
       <span className="practice-code-title">Display as you type:</span>
@@ -70,6 +114,16 @@ export const PracticeCode = () => {
         <button onClick={resetText}>Reset</button>
         <button onClick={displayExampleText}>Example</button>
         <p>{text}</p>
+      </div>
+
+      <span className="practice-code-title">Button with CSS:</span>
+      <div className="practice-code-container">
+        <button
+          className={isButtonOn ? "on-button" : "off-button"}
+          onClick={switchButton}
+        >
+          {isButtonOn ? "ON" : "OFF"}
+        </button>
       </div>
     </>
   );

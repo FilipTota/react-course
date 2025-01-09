@@ -34,16 +34,22 @@ const ChatMessages = ({ chatMessages }) => {
       } /* ref propery gets ref that we created above (which is chatMessagesRef)*/
       /* React will tahe this HTML element and save it inside chatMessagesRef variable/continer*/
     >
-      {chatMessages.map((chatMessage) => {
-        // .map() lets us go through array and convert each value to a new value
-        return (
-          <ChatMessage
-            message={chatMessage.message}
-            sender={chatMessage.sender}
-            key={chatMessage.id}
-          />
-        );
-      })}
+      {chatMessages.length !== 0 ? (
+        chatMessages.map((chatMessage) => {
+          // .map() lets us go through array and convert each value to a new value
+          return (
+            <ChatMessage
+              message={chatMessage.message}
+              sender={chatMessage.sender}
+              key={chatMessage.id}
+            />
+          );
+        })
+      ) : (
+        <p className="welcome-message">
+          Welcome to the Chatbot project! Send a message using the textbox below
+        </p>
+      )}
     </div>
   );
 };

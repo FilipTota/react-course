@@ -10,29 +10,7 @@ const App = () => {
   // state = state is a data that is connected to HTML
   // -> when we update this data it will update the HTML
   // if we just have the variable as a data, when ve add something to that data it will not update the HTML/it will not get diplayed on the browser in our code example, but when we save that data inside state, then it will update it
-  const [chatMessages, setChatMessages] = useState([
-    // array destructoring upon seting useState
-    {
-      id: "id1",
-      message: "hello chatbot",
-      sender: "user",
-    },
-    {
-      id: "id2",
-      message: "Hello! How can I help you?",
-      sender: "robot",
-    },
-    {
-      id: "id3",
-      message: "can you get me todays date?",
-      sender: "user",
-    },
-    {
-      id: "id4",
-      message: "Today is January 2",
-      sender: "robot",
-    },
-  ]);
+  const [chatMessages, setChatMessages] = useState([]); // array destructoring upon seting useState
 
   // array destructoring (order matters, first array value gets stored inside chatMessages, and second value inside setChatMessages)
   // const [chatMessages, setChatMessages] = array;
