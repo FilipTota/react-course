@@ -5,7 +5,6 @@ import "./ChatMessages.css";
 // Custom hook for autoScroll
 const useAutoScroll = (dependencies) => {
   const containerRef = useRef(null);
-  console.log("containerRef :>> ", containerRef);
 
   useEffect(() => {
     const containerElement = containerRef.current;
@@ -60,6 +59,7 @@ const ChatMessages = ({ chatMessages }) => {
               message={chatMessage.message}
               sender={chatMessage.sender}
               key={chatMessage.id}
+              time={chatMessage.time}
             />
           );
         })

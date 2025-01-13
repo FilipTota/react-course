@@ -21,6 +21,15 @@
   cursor: pointer;
 }
 
+.clear-button {
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 15px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
 .message-loading-spinner {
   height: 40px;
   margin: -15px;

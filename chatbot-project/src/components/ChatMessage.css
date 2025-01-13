@@ -15,8 +15,18 @@
   border-radius: 10px;
   margin: 0 10px 20px 10px;
   max-width: 300px;
+  display: flex;
+  flex-direction: column;
 }
 
 .chat-message-profile {
   width: 45px;
+  border-radius: 45px;
+  object-fit: cover;
+}
+
+.chat-message-currentTime {
+  color: #797979;
+  margin-top: 0.5em;
+  font-size: 15px;
 }
